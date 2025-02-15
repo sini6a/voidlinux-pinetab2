@@ -1,0 +1,35 @@
+# Template file for 'bes2600-firmware'
+pkgname=bes2600-firmware
+version=20231227.r0.g7a305de
+revision=1
+short_desc="Firmware files for BES2600"
+maintainer="Sinisha Stojchevski <sinisha@stojchevski.com>"
+license="custom"
+homepage="https://gitlab.com/pine64-org/bes2600-firmware"
+hostmakedepends="git"
+archs="aarch64"
+skip_extraction=yes
+
+_commit="7a305de61771a84f1264866b204cf172df6d9195"
+
+do_fetch() {
+    git clone https://gitlab.com/pine64-org/bes2600-firmware.git ${pkgname}-${version}
+    cd ${pkgname}-${version}
+    git checkout "${_commit}"
+}
+
+do_build() {
+    # No build needed
+    :
+}
+
+do_install() {
+    mkdir -p "${DESTDIR}/usr/lib/"
+    cp -r firmware "${DESTDIR}/usr/lib"
+}
+
+# Versioning based on git describe
+pkgver() {
+    git -C "$XBPS_SRCDISTDIR/$pkgname" describe --long --tags --abbrev=7 \
+        | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}

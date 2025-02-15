@@ -1,0 +1,53 @@
+# Template file for 'uboot-pinetab2'
+pkgname=uboot-pinetab2
+version=2023.07.02
+revision=4
+short_desc="U-Boot for PineTab 2"
+maintainer="Danct12 <danct12@disroot.org>"
+license="GPL"
+homepage="http://www.denx.de/wiki/U-Boot/WebHome"
+archs="aarch64"
+hostmakedepends="bc git bison which flex python3 python3-devel openssl-devel python3-pyelftools python3-setuptools swig"
+depends="u-boot-tools"
+replaces="uboot-pinetab2-mainline"
+backup="boot/boot.txt"
+
+_commit_uboot="81dac0348fb1d1d8279634d1438bf2a88b1ca9b7"
+_commit_rkbin="b4558da0860ca48bf1a571dd33ccba580b9abe23"
+
+do_fetch() {
+	git clone https://github.com/Kwiboo/u-boot-rockchip.git
+	cd u-boot-rockchip
+	git checkout "${_commit_uboot}"
+	cd ..
+
+	git clone https://github.com/rockchip-linux/rkbin.git
+	cd rkbin
+	git checkout "${_commit_rkbin}"
+	cd ..
+}
+
+pre_build() {
+	cd ../u-boot-rockchip
+  cp "${FILESDIR}/config" ".config"
+}
+
+do_build() {
+	cd ../u-boot-rockchip
+
+export CROSS_COMPILE=aarch64-linux-gnu-
+
+  make \
+    EXTRAVERSION=-${revision} \
+    BL31="../rkbin/bin/rk35/rk3568_bl31_v1.43.elf" \
+    ROCKCHIP_TPL="../rkbin/bin/rk35/rk3566_ddr_1056MHz_v1.18.bin"
+}
+
+do_install() {
+	cd ../u-boot-rockchip
+    install -Dm644 "idbloader.img" "$DESTDIR/boot/idbloader.img"
+    install -Dm644 "u-boot.itb" "$DESTDIR/boot/u-boot.itb"
+    install -Dm755 "${FILESDIR}/mkscr" "$DESTDIR/boot/mkscr"
+    install -Dm644 "${FILESDIR}/boot.txt" "$DESTDIR/boot/boot.txt"
+    install -Dm755 "${FILESDIR}/update-u-boot" "$DESTDIR/usr/bin/update-u-boot"
+}
