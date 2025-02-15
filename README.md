@@ -12,7 +12,7 @@ The compiled `.xbps` file is available in the [Releases](https://github.com/your
 ```bash
 mkdir -p ~/Documents/PineTab2
 cd ~/Documents/PineTab2
-wget https://#
+wget https://github.com/sini6a/voidlinux-pinetab2/releases/download/6.12.13/bes2600-firmware-20231227.r0.g7a305de_1.aarch64.xbps
 sudo xbps-rindex -a *.xbps
 sudo xbps-install --repository=$(pwd) bes2600-firmware
 ```
@@ -29,7 +29,7 @@ The compiled `.xbps` file is available in the [Releases](https://github.com/your
 ```bash
 mkdir -p ~/Documents/PineTab2
 cd ~/Documents/PineTab2
-wget https://#
+wget https://github.com/sini6a/voidlinux-pinetab2/releases/download/6.12.13/uboot-pinetab2-2023.07.02_4.aarch64.xbps
 sudo xbps-rindex -a *.xbps
 sudo xbps-install --repository=$(pwd) uboot-pinetab2
 ```
@@ -50,7 +50,8 @@ The compiled `.xbps` file is available in the [Releases](https://github.com/your
 ```bash
 mkdir -p ~/Documents/PineTab2
 cd ~/Documents/PineTab2
-wget https://#
+wget https://github.com/sini6a/voidlinux-pinetab2/releases/download/6.12.13/linux-pinetab2-6.12.13_1.aarch64.xbps
+wget https://github.com/sini6a/voidlinux-pinetab2/releases/download/6.12.13/linux6.12-headers-6.12.13_1.aarch64.xbps
 sudo xbps-rindex -a *.xbps
 sudo xbps-install --repository=$(pwd) linux-pinetab2
 sudo dracut --force /boot/initramfs-linux-pinetab2.img
